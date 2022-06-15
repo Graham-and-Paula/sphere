@@ -1,5 +1,6 @@
 //
 import DomCircle from "./src/domcircle.js";
+import Circle from "./src/circle.js";
 
 
 const canvas = document.getElementById("canvas");
@@ -57,10 +58,6 @@ function addShape(shapeName, attributes) {
 // canvas.append(rectangle, circle);
 
 
-
-
-
-
 const zone = new DomCircle(addShape("circle", {
 	id: "area",
 	cx: 100,
@@ -69,17 +66,36 @@ const zone = new DomCircle(addShape("circle", {
 	fill: "crimson"
 }));
 
-// 1. Create 100 of these
-const dot = new DomCircle(addShape("circle", {
-	class: "dot",
-	cx: 100, // <-- 2a) random number between 0 and 200
-	cy: 100, // <-- 2b) random number between 0 and 200
-	// 3. Maybe we need a helper function for random numbers in RANGES
-	r: 2 // 5. *BONUS*: <-- random number between 1 and 10
-}));
+// 3. Maybe we need a helper function for random numbers in RANGES
+function randomNumbers(min, max) {
+	return Math.round(Math.random() * (max - min) + min)
+};
+//<-- 1. Create 100 of these
+for (let i = 0; i < 99; i++) {
+	const dot = new DomCircle(addShape("circle", {
+		class: "dot",
+		cx: randomNumbers(0, 200), // <-- 2a) random number between 0 and 200
+		cy: randomNumbers(0, 200), // <-- 2b) random number between 0 and 200	
+		r: 2 // 5. *BONUS*: <-- random number between 1 and 10
+		}));
 
 // 4. We need to test each dot to see if it's INSIDE, OUTSIDE, or OVERLAPPING our zone
+	const dots = [dot];
+
+	console.log (dot);
+}
+
+
+
+
+//getLocation(dot)
+
+
+
 
 console.log(
 	zone
 );
+
+
+
