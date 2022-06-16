@@ -2,7 +2,6 @@
 import DomCircle from "./src/domcircle.js";
 import Circle from "./src/circle.js";
 
-
 const canvas = document.getElementById("canvas");
 
 function createShape(shapeName, attributes = {}) {
@@ -76,14 +75,27 @@ for (let i = 0; i < 99; i++) {
 		class: "dot",
 		cx: randomNumbers(0, 200), // <-- 2a) random number between 0 and 200
 		cy: randomNumbers(0, 200), // <-- 2b) random number between 0 and 200	
-		r: 2 // 5. *BONUS*: <-- random number between 1 and 10
+		r:randomNumbers(1, 10) // 5. *BONUS*: <-- random number between 1 and 10
 		}));
 
 // 4. We need to test each dot to see if it's INSIDE, OUTSIDE, or OVERLAPPING our zone
-	const dots = [dot];
+let inside = 0;
+let outside = 0;
+let overlaping = 0;
 
-	console.log (dot);
+if (zone.getLocation(dot) === Circle.INSIDE ) {
+		console.log(`the dot at ${dot.position} is inside`);
+		
+	}else if(zone.getLocation(dot) === Circle.OUTSIDE) {
+		console.log(`the dot at ${dot.position} is outside`);
+	} else if (zone.getLocation(dot) === Circle.OVERLAPPING) {
+	console.log(`the dot at ${dot.position} is overlaping`);
+	}
+	
+	// return the number of dots Inside, Outside and overlaping
+	//console.log(inside);
 }
+
 
 
 
