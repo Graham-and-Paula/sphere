@@ -1,65 +1,15 @@
 //
 import DomCircle from "./src/domcircle.js";
 import Circle from "./src/circle.js";
+import { addShape as addSVGShape } from "./src/svgutils.js";
+import { randomNumber } from "./src/random.js";
 
 const canvas = document.getElementById("canvas");
-let insideDots = [];
-let outsideDots = [];
-let overlappingDots = [];
-
-function createShape(shapeName, attributes = {}) {
-	const shape = document.createElementNS("http://www.w3.org/2000/svg", shapeName);
-
-	for (const [attributeName, value] of Object.entries(attributes))
-		shape.setAttribute(attributeName, value);
-
-	return shape;
-}
-
-function addShape(shapeName, attributes) {
-	const shape = createShape(shapeName, attributes);
-	canvas.append(shape);
-	return shape;
-}
-
-// Lazy way:
-//
-// const rectangle = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-// rectangle.setAttribute(
-// 	"x", "120"
-// );
-// rectangle.setAttribute(
-// 	"y", "120"
-// );
-// rectangle.setAttribute(
-// 	"width", "20"
-// );
-// rectangle.setAttribute(
-// 	"height", "40"
-// );
-// rectangle.setAttribute(
-// 	"fill", "cornflowerblue"
-// );
-
-// Even lazier way:
-// const rectangle = createShape("rect", {
-// 	x: 80,
-// 	y: 60,
-// 	width: 40,
-// 	height: 80,
-// 	fill: "chartreuse"
-// });
-
-// const circle = createShape("circle", {
-// 	cx: 30,
-// 	cy: 50,
-// 	r: 10,
-// 	fill: "pink"
-// })
-
-// canvas.append(rectangle, circle);
-
-
+const dots = {
+	[Circle.INSIDE]: [],
+	[Circle.OUTSIDE]: [],
+	[Circle.OVERLAPPING]: []
+};
 const zone = new DomCircle(addShape("circle", {
 	id: "area",
 	cx: 100,
@@ -67,47 +17,62 @@ const zone = new DomCircle(addShape("circle", {
 	r: 80,
 	fill: "crimson"
 }));
+// let insideDots = [];
+// let outsideDots = [];
+// let overlappingDots = [];
 
-// 3. Maybe we need a helper function for random numbers in RANGES
-function randomNumber(min, max) {
-	return Math.round(Math.random() * (max - min) + min)
-};
-//<-- 1. Create 100 of these
-for (let i = 0; i < 99; i++) {
-	const dot = new DomCircle(addShape("circle", {
-		class: "dot",
-		cx: randomNumber(0, 200), // <-- 2a) random number between 0 and 200
-		cy: randomNumber(0, 200), // <-- 2b) random number between 0 and 200	
-		r:randomNumber(1, 10) // 5. *BONUS*: <-- random number between 1 and 10
-		}));
-
-// 4. We need to test each dot to see if it's INSIDE, OUTSIDE, or OVERLAPPING our zone
-
-
-if (zone.getLocation(dot) === Circle.INSIDE ) {
-		document.getElementsByClassName("dot").classList.toggle("inside");
-		insideDots.push(dot);
-		console.log(`the dot at ${dot.position} is inside`);
-	}else if(zone.getLocation(dot) === Circle.OUTSIDE) {
-		outsideDots.push(dot);
-		console.log(`the dot at ${dot.position} is outside`);
-	} else if (zone.getLocation(dot) === Circle.OVERLAPPING) {
-		overlappingDots.push(dot);
-	console.log(`the dot at ${dot.position} is overlaping`);
-	}
-		
+function addShape(shapeName, attributes) {
+	return addSVGShape(canvas, shapeName, attributes);
 }
 
-insideDots.
+// for...in
+// create an Array of size 100 and FILL it with 1s
+for (const i in /*  */) {
 
-// return the number of dots Inside, Outside and overlaping
-console.log("There are" , insideDots.length , "dots inside!" );
-console.log("There are" , outsideDots.length , "dots outside!");
-console.log("There are" , overlappingDots.length , "dots overlapping!");
+}
+for (let i = 0; i < 99; i += 1) {
+	const dot = new DomCircle(
+		addShape(
+			"circle",
+			{
+				class: "dot",
+				cx: randomNumber(0, 200), // <-- 2a) random number between 0 and 200
+				cy: randomNumber(0, 200), // <-- 2b) random number between 0 and 200	
+				r: randomNumber(1, 10) // 5. *BONUS*: <-- random number between 1 and 10
+			}
+		)
+	);
 
-console.log(
-	zone
-);
+	const location = zone.getLocation(dot); // 
+	dots[location].push(dot);
 
+	// 4. We need to test each dot to see if it's INSIDE, OUTSIDE, or OVERLAPPING our zone
+	// if (location === Circle.INSIDE)
+	// 	insideDots.push(dot);
+	// else if (location === Circle.OUTSIDE)
+	// 	outsideDots.push(dot);
+	// else /*if (location === Circle.OVERLAPPING)*/
+	// 	overlappingDots.push(dot);
 
+	// INDEPENDENT CHECKS:
+	// location === Circle.INSIDE && insideDots.push(dot);
+	// location === Circle.OUTSIDE && outsideDots.push(dot);
+	// location === Circle.OVERLAPPING && overlappingDots.push(dot);
+}
 
+// HOMEWORK #2: Keep it DRY
+dots[Circle.INSIDE].forEach(dot => {
+	dot.element.setAttribute("fill", "white");
+});
+for (const dot of dots[Circle.OUTSIDE]) {
+	dot.element.setAttribute("fill", "pink");
+}
+for (let i = 0; i < dots[Circle.OVERLAPPING].length; i++) {
+	const dot = dots[Circle.OVERLAPPING][i];
+	dot.element.setAttribute("fill", "purple");
+}
+
+// HOMEWORK #1: Display how many are in each LOCATION in a DOM element:
+// console.log("There are" , insideDots.length , "dots inside!" );
+// console.log("There are" , outsideDots.length , "dots outside!");
+// console.log("There are" , overlappingDots.length , "dots overlapping!");

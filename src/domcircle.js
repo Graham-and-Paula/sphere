@@ -1,6 +1,8 @@
 import Circle from "./circle.js";
 
 export default class DomCircle extends Circle {
+	element;
+
 	constructor(element) {
 		const [
 			cX,
@@ -11,5 +13,7 @@ export default class DomCircle extends Circle {
 		);
 
 		super([cX, cY], radius);
+		// this.element = element;
+		Object.assign(this, {element});
 	}
 }
