@@ -5,6 +5,7 @@ import { addShape as addSVGShape } from "./src/svgutils.js";
 import { randomNumber } from "./src/random.js";
 
 const canvas = document.getElementById("canvas");
+// const infoSpans = document.querySelectorAll("header > ul > li > span");
 
 const zone = new DomCircle(addShape("circle", {
 	id: "area",
@@ -20,19 +21,22 @@ const dots = {
 	[Circle.OVERLAPPING]: []
 };
 
-const countDiv = document.createElement("div");
-document.append(countDiv);
-// countDiv.style.zIndex = "2";
-// countDiv.style.color = "black";
-// document.getElementsByTagName('div').textContent = String(dots[Circle.INSIDE].length);
-document.append();
-
 // let insideDots = [];
 // let outsideDots = [];
 // let overlappingDots = [];
 
 function addShape(shapeName, attributes) {
 	return addSVGShape(canvas, shapeName, attributes);
+}
+
+function changeColourOfDot(colour, dot) {
+	dot.element.setAttribute("fill", colour);
+}
+
+function changeColourOfManyDots(colour, dots) {
+	dots.forEach(dot => {
+		changeColourOfDot(colour, dot);
+	});
 }
 
 // for...in
@@ -69,60 +73,35 @@ for (const i in Array(100).fill(1)) {
 	// location === Circle.OVERLAPPING && overlappingDots.push(dot);
 }
 
-// HOMEWORK #2: Keep it DRY
+const count = document.createElement("ul");
+document.querySelector("body > header").append(count);
 
-//option1
-//  dots[Circle.INSIDE,
-// 		Circle.OUTSIDE,
-// 		Circle.OVERLAPPING
-// 	] = ["fill"].map((dot, attribute) =>)
+[
+	[
+		dots[Circle.INSIDE],
+		"white"
+	],
+	[
+		dots[Circle.OUTSIDE],
+		"pink"
+	],
+	[
+		dots[Circle.OVERLAPPING],
+		"purple"
+	]
+].forEach( ( [locationList, colour] ) => {
+	changeColourOfManyDots(colour, locationList);
 
-dots[Circle.INSIDE].forEach(dot => {
-	dot.element.setAttribute("fill", "white");
-});
-dots[Circle.OUTSIDE].forEach(dot => {
-	dot.element.setAttribute("fill", "pink");
-});
-dots[Circle.OVERLAPPING].forEach(dot => {
-	dot.element.setAttribute("fill", "purple");
-});
+	// const count = locationList.length;
+	// infoSpans[index].textContent = count;
+	// console.log(count);
+	// countDiv.textContent += `${length}, `;
 
-//option 2
+	const listItem = document.createElement('li');
+	listItem.textContent = locationList.length;
+	listItem.style.color = colour;
 
-// for (const dot of dots[Circle.INSIDE]) {
-// 	dot.element.setAttribute("fill", "white");
-// }
-// for (const dot of dots[Circle.OUTSIDE]) {
-// 	dot.element.setAttribute("fill", "pink");
-// }
-// for (const dot of dots[Circle.OVERLAPPING]) {
-// 	dot.element.setAttribute("fill", "purple");
-// }
-
-//option 3
-
-// for (let i = 0; i < dots[Circle.INSIDE].length; i++) {
-// 	const dot = dots[Circle.INSIDE][i];
-// 	dot.element.setAttribute("fill", "white");
-// }
-// for (let i = 0; i < dots[Circle.OUTSIDE].length; i++) {
-// 	const dot = dots[Circle.OUTSIDE][i];
-// 	dot.element.setAttribute("fill", "pink");
-// }
-// for (let i = 0; i < dots[Circle.OVERLAPPING].length; i++) {
-// 	const dot = dots[Circle.OVERLAPPING][i];
-// 	dot.element.setAttribute("fill", "purple");
-// }
-
-// HOMEWORK #1: Display how many are in each LOCATION in a DOM element:
-
+	count.append(listItem);
 
 	
-
-	console.log(dots[Circle.INSIDE].length);
-
-
-
-console.log("There are" , dots[Circle.INSIDE].length , "dots inside!" );
-console.log("There are" , dots[Circle.OUTSIDE].length , "dots outside!");
-console.log("There are" , dots[Circle.OVERLAPPING].length , "dots overlapping!");
+});
