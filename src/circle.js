@@ -27,7 +27,7 @@ export default class Circle {
 
 	static getDistance(a, b) {
 		return Math.sqrt(a.position.map((coord, index) => {
-			return (coord - b.position[index] ?? 0) ** 2
+			return (coord - b.position[index]) ** 2
 		}).reduce(add, 0));
 	}
 }

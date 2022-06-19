@@ -12,3 +12,7 @@ export function addShape(canvas, shapeName, attributes) {
 	canvas.append(shape);
 	return shape;
 }
+
+function createDiv() {
+	const countDiv = document.createElement()
+}
