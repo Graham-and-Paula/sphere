@@ -13,6 +13,6 @@ export function addShape(canvas, shapeName, attributes) {
 	return shape;
 }
 
-function createDiv() {
+function createCountDiv(tagName, ) {
 	const countDiv = document.createElement()
 }

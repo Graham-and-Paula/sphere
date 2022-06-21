@@ -73,8 +73,8 @@ for (const i in Array(100).fill(1)) {
 	// location === Circle.OVERLAPPING && overlappingDots.push(dot);
 }
 
-const count = document.createElement("ul");
-document.querySelector("body > header").append(count);
+// const count = document.createElement("ul");
+// document.querySelector("body > header").append(count);
 
 [
 	[
@@ -89,19 +89,25 @@ document.querySelector("body > header").append(count);
 		dots[Circle.OVERLAPPING],
 		"purple"
 	]
-].forEach( ( [locationList, colour] ) => {
+].forEach( ( [locationList, colour], index ) => {
 	changeColourOfManyDots(colour, locationList);
 
-	// const count = locationList.length;
+	
 	// infoSpans[index].textContent = count;
 	// console.log(count);
 	// countDiv.textContent += `${length}, `;
 
-	const listItem = document.createElement('li');
-	listItem.textContent = locationList.length;
-	listItem.style.color = colour;
-
-	count.append(listItem);
-
+	// const listItem = document.createElement('li');
+	// listItem.textContent = locationList.length;
+	// listItem.style.color = colour;
 	
+	const listItem = addShape("text", {
+		class: "dotsTotal", 
+		x : 20,
+		y : 20 + index * 15,
+		fill: "black"
+	});
+	listItem.textContent = locationList.length;
+	console.log(listItem)
+
 });
